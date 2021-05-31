@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- Spring Container에게 정보를 제공하는 설정정보 -->
+<!-- 1. 객체 생성 : 사용할 객체들을 미리 먼저 만든다. -->
+
+<!-- bean : Container에 의해서 생성되고 관리되는 객체 -->
+<!-- id:"외부 호출 이름" class:"실체 객체가 될 클래스 위치" -->
+	<bean id="oracle" class="com.ict.edu02.OracleDAO"></bean>
+	<bean id="mysql" class="com.ict.edu02.MySQLDAO"></bean>
+<!-- 2. 만들어진 객체를 주입(DI) -->
+</beans>

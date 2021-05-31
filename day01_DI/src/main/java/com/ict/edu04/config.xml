@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- Spring Container에게 정보를 제공하는 설정정보 -->
+<!-- 1. 객체 생성 : 사용할 객체들을 미리 먼저 만든다. -->
+	<bean id="oracle" class="com.ict.edu04.OracleDAO"/>
+	<bean id="mysql" class="com.ict.edu04.MySQLDAO"/>
+	
+<!-- 2. 객체를 생성하면서 주입(DI) -->
+<!-- name : 생성자에서 받은 인자이름,  ref : 위에서 만든 객체 ID 참조,  value : 직접데이터입력 -->
+	<bean id="dao1" class="com.ict.edu04.Service">
+		<constructor-arg name="dao" ref="oracle"></constructor-arg>
+	</bean>
+		<bean id="dao2" class="com.ict.edu04.Service">
+		<constructor-arg name="dao" ref="mysql"></constructor-arg>
+	</bean>
+</beans>
