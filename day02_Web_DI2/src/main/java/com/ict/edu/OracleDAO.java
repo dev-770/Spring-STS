@@ -1,5 +1,8 @@
 package com.ict.edu;
 
+import org.springframework.stereotype.Component;
+
+@Component("dao")
 public class OracleDAO implements DAO {
 	
 	public OracleDAO() {

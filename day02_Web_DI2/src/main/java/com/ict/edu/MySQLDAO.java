@@ -1,5 +1,8 @@
 package com.ict.edu;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MySQLDAO implements DAO{
 	public MySQLDAO() {
 		System.out.println("MySQL 생성자");

@@ -1,7 +1,12 @@
 package com.ict.edu;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component("service")
 public class Service {
 	// 클래스가 자료형 (참조 자료형 = 객체 자료형)
+	@Autowired
 	private DAO dao;
 	
 	public Service() {}

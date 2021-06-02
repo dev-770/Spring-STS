@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
 <!-- Spring Container에게 정보를 제공하는 설정정보 -->
 <!-- 1. 객체 생성 : 사용할 객체들을 미리 먼저 만든다. -->
-	<bean id="oracle" class="com.ict.edu05.OracleDAO"/>
-	<bean id="mysql" class="com.ict.edu05.MySQLDAO"/>
+<!-- 	<bean id="oracle" class="com.ict.edu.OracleDAO"/>
+	<bean id="mysql" class="com.ict.edu.MySQLDAO"/> -->
 	
 <!-- 2. 객체를 생성하면서 주입(DI setter 이용) -->
-	<bean id="service" class="com.ict.edu05.Service">
-		<!-- setter 호출 property -->
+<!-- 	<bean id="service" class="com.ict.edu.Service">
+		setter 호출 property
 		<property name="dao" ref="oracle"></property>
-	</bean>
+	</bean> -->
 	
+	<context:annotation-config></context:annotation-config>
+	<context:component-scan base-package="com.ict.edu"></context:component-scan>
 </beans>
