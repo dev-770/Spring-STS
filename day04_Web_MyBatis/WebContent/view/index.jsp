@@ -6,6 +6,18 @@
 <%@page import="org.springframework.web.context.WebApplicationContext"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ 
+<%
+	try {
+	WebApplicationContext context = 
+		WebApplicationContextUtils.getWebApplicationContext(application);
+	DAO dao = (DAO) context.getBean("dao");
+	List<VO> list = dao.getList();
+	pageContext.setAttribute("list", list);
+	}catch(Exception e) {
+		System.out.println("에러 : " + e);
+	}
+%>
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +57,7 @@
 			<tbody>
 				<c:forEach var="k" items="${list }">
 					<tr>
-						<td>${k.idx }</td>
+						<td> <a href="detail.jsp?idx=${k.idx }"> ${k.idx } </a></td>
 						<td>${k.id }</td>
 						<td>${k.name }</td>
 					</tr>

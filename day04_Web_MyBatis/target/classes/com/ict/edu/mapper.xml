@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="members">
+	<!-- 실제 DB 처리를 하는 xml  파일 (쿼리 작성을 여기서 한다.) -->
+	<!-- select는 <select>, insert는 <insert>, update는 <update> delete는 <delete -->
+	<!--  select 태그 속성은 id="" parameterType="" resultType="" -->
+	<!-- id => 외부에서 호출하는 이름, 파라미터타입, resultType="결과가 저장되는 타입" -->
+	<select id="selectAll"  resultType="com.ict.edu.VO">
+		select * from members order by idx
+	</select>
+	
+	<!-- insert, update, delete resultType이 없다. 파라미터 타입만 존재 -->
+	<!--  파라미터가 들어갈 자리에 #{변수이름} -->
+	<insert id="insert" parameterType="com.ict.edu.VO">
+		insert into members values(#{idx},#{id},#{pw},#{name},#{age}, sysdate)
+	</insert>
+	
+	<select id="detail" resultType="com.ict.edu.VO" parameterType="String">
+		select * from members where idx = #{idx}
+	</select>
+</mapper>
