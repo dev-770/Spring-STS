@@ -9,9 +9,9 @@
 	request.setCharacterEncoding("utf-8");
 	VO vo = new VO();
 	vo.setId(request.getParameter("id"));
-	vo.setId(request.getParameter("pw"));
-	vo.setId(request.getParameter("name"));
-	vo.setId(request.getParameter("age"));
+	vo.setPw(request.getParameter("pw"));
+	vo.setName(request.getParameter("name"));
+	vo.setAge(request.getParameter("age"));
 	
 	// DB 처리를 위해서 DAO 호출
 	WebApplicationContext context =
