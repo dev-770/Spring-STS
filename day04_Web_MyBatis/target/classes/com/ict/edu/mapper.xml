@@ -20,4 +20,12 @@
 	<select id="detail" resultType="com.ict.edu.VO" parameterType="String">
 		select * from members where idx = #{idx}
 	</select>
+	
+	<delete id="delete" parameterType="com.ict.edu.VO">
+		delete from members where idx = #{idx}
+	</delete>
+	
+	<update id="update" parameterType="com.ict.edu.VO">
+		update members set name=#{name}, age=#{age} where idx = #{idx}
+	</update>
 </mapper>

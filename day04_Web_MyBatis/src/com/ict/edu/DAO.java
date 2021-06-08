@@ -50,4 +50,16 @@ public class DAO {
 		vo = sqlSessionTemplate.selectOne("detail", idx);
 		return vo;
 	}
+	
+	public int getDelete(String idx) {
+		int result = 0;
+		result = sqlSessionTemplate.delete("delete", idx);
+		return result;
+	}
+	
+	public int getUpdate(String idx) {
+		int result = 0;
+		result = sqlSessionTemplate.update("update", idx);
+		return result;
+	}
 }

@@ -20,6 +20,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
+	h2 {
+		text-align: center;
+	}
 	table {
 		width: 500px; border-collapse: collapse; margin: auto;
 	}
@@ -30,11 +33,11 @@
 </style>
 <script type="text/javascript">
 	function update_go(f) {
-		f.aciotn="update.jsp";
+		f.action="update.jsp";
 		f.submit();
 	}
 	function delete_go(f) {
-		f.aciotn="delete.jsp";
+		f.action="delete.jsp";
 		f.submit();
 	}
 </script>
@@ -42,6 +45,7 @@
 <body>
 	<form method="post">
 	<table>
+		<h2> 개인정보 상세보기 </h2>
 		<thead>
 			<tr>
 				<td>번호</td>
