@@ -1,0 +1,43 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<% request.setCharacterEncoding("UTF-8"); %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+   div{text-align: center; margin: 100px auto; width: 500px;}
+   input {  padding: 10px; }
+</style>
+<script type="text/javascript">
+	function delete_ok(f) {
+		if("${vo.pw}" == f.pw.value) {
+			var msg = confirm("정말 삭제할까요?");
+			if(msg) {
+				f.action="delete_ok.do";
+				f.submit();
+			}else {
+				history.go(-1);
+			}
+		}else {
+			alert("비밀번호틀림");
+			f.pw.value="";
+			f.pw.focus();
+			return;
+		}
+	}
+</script>
+</head>
+<body>
+<div>
+      <form  method="post">
+         <fieldset>
+            <legend>삭제하기</legend>
+                비밀번호 : <input type="password" name="pw"  placeholder="비밀번호 입력하세요">
+             <input type="button" value="삭제하기" onclick="delete_ok(this.form)">
+          </fieldset>
+      </form>
+   </div>
+</body>
+</html>
