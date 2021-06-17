@@ -1,22 +1,14 @@
 package com.ict.db;
 
 public class CVO {
-	private String b_idx, subject, writer, content, name, write_date, hit;
-
-	public String getB_idx() {
-		return b_idx;
+	private String c_idx, writer, content, write_date, b_idx;
+	
+	public String getC_idx() {
+		return c_idx;
 	}
 
-	public void setB_idx(String b_idx) {
-		this.b_idx = b_idx;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
+	public void setC_idx(String c_idx) {
+		this.c_idx = c_idx;
 	}
 
 	public String getWriter() {
@@ -35,14 +27,6 @@ public class CVO {
 		this.content = content;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getWrite_date() {
 		return write_date;
 	}
@@ -51,12 +35,11 @@ public class CVO {
 		this.write_date = write_date;
 	}
 
-	public String getHit() {
-		return hit;
+	public String getB_idx() {
+		return b_idx;
 	}
 
-	public void setHit(String hit) {
-		this.hit = hit;
+	public void setB_idx(String b_idx) {
+		this.b_idx = b_idx;
 	}
-	
 }

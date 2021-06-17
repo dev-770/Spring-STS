@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ict.db.BVO;
 import com.ict.db.CVO;
 import com.ict.db.DAO;
+import com.ict.model.Paging;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -29,20 +31,76 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 public class MyController {
 	@Autowired
 	private DAO dao;
+	
+	@Autowired
+	private Paging pvo;
 
+	/* 리스트 처리 */
 	@RequestMapping("list.do")
-	public ModelAndView listCommand() {
+	public ModelAndView listCommand(HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView("list");
-		List<BVO> list = dao.getList();
+		// 전체 게시물 보기 
+		// List<BVO> list = dao.getList();
+		// mv.addObject("list",list);
+		
+		// 1. 전체 게시물 수 구하기 
+		 int count = dao.getTotalCount();
+		 pvo.setTotalRecord(count);
+	
+		// 2. 전체 게시물의 수를 이용해서 전체 페이지 수 구하기 
+		 if(pvo.getTotalRecord()<= pvo.getNumPerPage()) {
+			pvo.setTotalPage(1);
+		 }else {
+			 pvo.setTotalPage(pvo.getTotalRecord()/pvo.getNumPerPage());
+			 if(pvo.getTotalRecord() % pvo.getNumPerPage()!=0) {
+				 pvo.setTotalPage(pvo.getTotalPage()+1);
+			 }
+		 }
+			
+		// 3. 파라미터로 넘어온 cPage가 현재 페이지 가 된다.
+		//   list.do일때는 무조건 cPage값을 넘겨야 된다. 
+		 String cPage = request.getParameter("cPage");
+		 pvo.setNowPage(Integer.parseInt(cPage));
+		
+		// 4. 시작번호, 끝번호 구하기
+		 pvo.setBegin((pvo.getNowPage()-1)*pvo.getNumPerPage()+1);
+		 pvo.setEnd((pvo.getBegin()-1)+pvo.getNumPerPage());
+		
+		// 5. 시작블록, 끝블록 구하기 
+		pvo.setBeginBlock((int)(pvo.getNowPage()-1)/pvo.getPagePerBlock()*pvo.getPagePerBlock()+1);
+		pvo.setEndBlock(pvo.getBeginBlock()+pvo.getPagePerBlock()-1);
+		
+		// 주의 : 끝블록이 전체 페이지의 수보다 클경우가 있다.
+		//  이 경우에는 끝블록을 전체 페이지의 수로 변경한다.
+		if(pvo.getEndBlock() > pvo.getTotalPage()) {
+			pvo.setEndBlock(pvo.getTotalPage());
+		}
+		
+		// DB처리 (시작번호와 끝번호로 DB처리)
+		List<BVO> list = dao.getList(pvo.getBegin(), pvo.getEnd());
+		
+		// 저장
 		mv.addObject("list", list);
+		mv.addObject("pvo", pvo);
+		
 		return mv;
 	}
-
+	
+/*
 	@RequestMapping("write.do")
-	public ModelAndView writeCommand() {
+	public ModelAndView writeCommand(HttpServletRequest req) {
+		String cPage = req.getParameter("cPage");
+		req.setAttribute("cPage", cPage);
+		return new ModelAndView("write");
+	}
+*/
+	/* 글쓰기 */
+	@RequestMapping("write.do")
+	public ModelAndView writeCommand(@ModelAttribute("cPage")String cPage) { 
 		return new ModelAndView("write");
 	}
 
+	/* 글작성 올리기 */
 	@RequestMapping(value = "write_ok.do", method = RequestMethod.POST)
 	public ModelAndView write_OKCommand(HttpServletRequest req) {
 		try {
@@ -66,8 +124,9 @@ public class MyController {
 				bvo.setFile_name("");
 			}
 			int result = dao.getInsert(bvo);
+			// String cPage = mr.getParameter("cPage");
 			if(result > 0) {
-				return new ModelAndView("redirect:list.do");
+				return new ModelAndView("redirect:list.do?cPage=1");
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -75,10 +134,12 @@ public class MyController {
 		return null;
 	}
 	
+	/* 내용 보기 */
 	@RequestMapping("onelist.do")
 	public ModelAndView oneListCommand(HttpServletRequest req) {
 		ModelAndView mv = new ModelAndView("onelist");
 		String b_idx = req.getParameter("b_idx");
+		String cPage = req.getParameter("cPage");
 		// 조회수 업데이트
 		int result = dao.getHit(b_idx);
 		
@@ -91,9 +152,11 @@ public class MyController {
 		// 댓글 가져오기
 		List<CVO> c_list = dao.getC_List(b_idx);
 		req.setAttribute("c_list", c_list);
+		req.setAttribute("cPage", cPage);
 		return mv;
 	}
 	
+	/* 다운로드 처리 */
 	@RequestMapping(value="down.do", method = RequestMethod.GET)
 	public void downCommand(@RequestParam("file_name") String file_name,
 			HttpServletRequest req, HttpServletResponse res) {
@@ -132,6 +195,7 @@ public class MyController {
 		}
 	}
 	
+	/* 댓글 작성 */
 	@RequestMapping("comm_ins.do")
 	public ModelAndView comm_insCommand(HttpServletRequest req, CVO cvo) {
 		BVO bvo = (BVO)req.getSession().getAttribute("bvo");
@@ -141,6 +205,17 @@ public class MyController {
 		int result = dao.getC_Insert(cvo);
 		if(result > 0) {
 			return new ModelAndView("redirect:onelist.do?b_idx="+bvo.getB_idx());
+		}
+		return null;
+	}
+	
+	/* 댓글 삭제 */
+	@RequestMapping("comm_del.do")
+	public ModelAndView comm_delCommand(CVO cvo) {
+		int result = dao.getC_Delete(cvo);
+				
+		if(result > 0) {
+			return new ModelAndView("redirect:onelist.do?b_idx="+cvo.getB_idx());
 		}
 		return null;
 	}

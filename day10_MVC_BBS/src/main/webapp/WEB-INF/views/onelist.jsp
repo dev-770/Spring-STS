@@ -109,6 +109,7 @@
 						<input type="button" value="수정" onclick="update_go(this.form)">
 						<input type="button" value="삭제" onclick="delete_go(this.form)">
 						<input type="button" value="목록" onclick="list_go(this.form)"/>
+						<input type="hidden" name="cPage" value="${cPage }">
 					</td>
 				</tr>
 			</tbody>
@@ -127,9 +128,12 @@
 								<tr>
 									<%-- 댓글쓴사람과 로그인 사람이 같아야지만 삭제 가능 --%>
 									<td>
+										<input type="hidden" name="c_idx" value="${k.c_idx }">
+										<input type="hidden" name="b_idx" value="${k.b_idx }">
 										<textarea rows="4" cols="70" name="content" readonly="readonly">${k.content }</textarea>
 									</td>
 									<td><input style="height: 65px;" type="button" value="댓글삭제" onclick="comm_del(this.form)"></td>
+
 								</tr>
 							</tbody>
 						</table>

@@ -48,7 +48,7 @@
 		f.submit();
 	}
 	function list_go(f) {
-		f.action="list.do"
+		f.action="list.do?cPage=${cPage}"
 		f.submit();
 	}
 </script>
@@ -84,6 +84,7 @@
 						<input type="button" value="보내기" onclick="write_ok(this.form)">
 						<input type="reset" value="다시">
 						<input type="button" value="목록" onclick="list_go(this.form)"/>
+						<input type="hidden" name="cPage" value="${cPage }">
 					</td>
 				</tr>
 			</tbody>

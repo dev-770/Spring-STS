@@ -5,10 +5,23 @@
   
 <mapper namespace="bbs_t">
 
+<select id="count" resultType="int">
+	select count(*) from bbs_t
+</select>
+
+<!-- 
 <select id="selectAll" resultType="com.ict.db.BVO">
 	select * from bbs_t order by b_idx desc
 </select>
-
+ -->
+ 
+ <select id="list" parameterType="Map" resultType="com.ict.db.BVO">
+ 	select * from
+	(select rownum rn, a.* from
+	(select * from bbs_t order by b_idx desc) a)
+	where rn between #{begin } and #{end }
+ </select>
+ 
 <insert id="insert" parameterType="com.ict.db.BVO">
 	insert into bbs_t values(bbs_t_seq.nextval, #{subject}, #{writer}, #{content}, #{file_name}, #{pwd}, sysdate, 0)
 </insert>
@@ -28,5 +41,10 @@
 <insert id="c_insert" parameterType="com.ict.db.CVO">
 	insert into comment_t values(comment_t_seq.nextval, null, #{content}, sysdate, #{b_idx})
 </insert>
-	
+
+<delete	id="c_delete" parameterType="com.ict.db.CVO">
+	delete from comment_t where c_idx = #{c_idx}
+</delete>
+
+
 </mapper>
